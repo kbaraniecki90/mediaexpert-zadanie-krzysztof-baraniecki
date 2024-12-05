@@ -14,12 +14,20 @@
           <td>{{ product.quantity }}</td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td><strong>Razem:</strong></td>
+          <td>
+            <strong>{{ totalQuantity }}</strong>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, computed } from "vue";
 
 export default defineComponent({
   props: {
@@ -27,6 +35,15 @@ export default defineComponent({
       type: Array as PropType<{ name: string; quantity: number }[]>,
       required: true,
     },
+  },
+  setup(props) {
+    const totalQuantity = computed(() =>
+      props.products.reduce((total, product) => total + product.quantity, 0)
+    );
+
+    return {
+      totalQuantity,
+    };
   },
 });
 </script>
