@@ -5,7 +5,7 @@
       :id="id"
       class="form-control"
       :type="type"
-      :value="inputValue"
+      :value="modelValue"
       :min="min"
       :placeholder="placeholder"
       @input="onInput"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 const props = defineProps({
   id: String,
@@ -23,7 +23,7 @@ const props = defineProps({
     type: String,
     default: "text",
   },
-  value: {
+  modelValue: {
     type: [String, Number],
     default: "",
   },
@@ -41,16 +41,17 @@ const props = defineProps({
   },
 });
 
-const inputValue = ref(props.value);
+const emit = defineEmits(["update:modelValue"]);
 
 const onInput = (event: Event) => {
   let value = (event.target as HTMLInputElement).value;
 
   if (props.type === "number") {
-    value = value = value.replace(",", ".");
-    inputValue.value = value;
+    value = value.replace(",", ".");
     const parsedValue = parseInt(value, 10);
-    inputValue.value = isNaN(parsedValue) ? value : Math.round(parsedValue);
+    value = isNaN(parsedValue) ? value : Math.round(parsedValue);
   }
+
+  emit("update:modelValue", value);
 };
 </script>
