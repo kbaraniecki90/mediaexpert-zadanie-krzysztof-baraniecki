@@ -24,8 +24,15 @@
             required
           />
         </div>
+
         <div class="col">
-          <button type="submit" class="btn btn-primary">Dodaj produkt</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :disabled="isButtonDisabled"
+          >
+            Dodaj produkt
+          </button>
         </div>
       </div>
     </form>
@@ -33,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import Input from "./Input.vue";
 
 export default defineComponent({
@@ -46,9 +53,14 @@ export default defineComponent({
       productQuantity: 1,
     };
   },
+  computed: {
+    isButtonDisabled(): boolean {
+      return this.productName.length < 3;
+    },
+  },
   methods: {
     addProduct() {
-      if (this.productName.length < 3) return;
+      if (this.isButtonDisabled) return;
 
       const product = {
         name: this.productName,
