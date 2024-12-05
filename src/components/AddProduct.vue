@@ -55,6 +55,8 @@ export default defineComponent({
         quantity: this.productQuantity,
       };
 
+      this.$emit("addProduct", product);
+
       this.productName = "";
       this.productQuantity = 1;
     },
