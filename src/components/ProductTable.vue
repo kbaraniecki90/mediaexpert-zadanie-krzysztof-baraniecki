@@ -18,6 +18,10 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-if="sortedProducts.length === 0">
+          <td colspan="3" class="text-center">Brak danych</td>
+        </tr>
+
         <tr v-for="(product, index) in sortedProducts" :key="index">
           <td>{{ product.name }}</td>
           <td>{{ product.quantity }}</td>
@@ -31,7 +35,7 @@
           </td>
         </tr>
       </tbody>
-      <tfoot>
+      <tfoot v-if="sortedProducts.length > 0">
         <tr>
           <td></td>
           <td>
