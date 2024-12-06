@@ -16,26 +16,32 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent="saveChanges">
-              <div class="form-group">
-                <label for="name">Nazwa produktu</label>
-                <input
-                  v-model="localProduct.name"
+              <div class="d-flex gap-3">
+                <Input
                   id="name"
-                  class="form-control"
+                  label="Nazwa produktu"
+                  v-model="localProduct.name"
+                  placeholder="Nazwa produktu"
+                  required
                 />
-              </div>
-              <div class="form-group">
-                <label for="quantity">Ilość</label>
-                <input
-                  type="number"
-                  v-model.number="localProduct.quantity"
+                <Input
                   id="quantity"
-                  class="form-control"
-                  min="1"
+                  type="number"
+                  label="Ilość produktu"
+                  placeholder="Ilość produktu"
+                  v-model="localProduct.quantity"
+                  :min="1"
+                  required
                 />
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Zapisz</button>
+                <button
+                  type="button"
+                  @click="deleteProduct"
+                  class="btn btn-danger"
+                >
+                  Usuń produkt
+                </button>
                 <button
                   type="button"
                   @click="closeModal"
@@ -43,12 +49,8 @@
                 >
                   Anuluj
                 </button>
-                <button
-                  type="button"
-                  @click="deleteProduct"
-                  class="btn btn-danger"
-                >
-                  Usuń produkt
+                <button type="submit" class="btn btn-primary">
+                  Aplikuj zmiany
                 </button>
               </div>
             </form>
@@ -62,8 +64,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import Input from "./Input.vue";
 
 export default defineComponent({
+  components: {
+    Input,
+  },
   props: {
     show: {
       type: Boolean,
