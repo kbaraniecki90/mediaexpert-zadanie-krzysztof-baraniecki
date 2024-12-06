@@ -2,8 +2,8 @@
   <div>
     <h1>Dodawanie produktu</h1>
     <form @submit.prevent="addProduct">
-      <div class="row align-items-end">
-        <div class="col">
+      <div class="row row-gap-3 align-items-end">
+        <div class="col-12 col-md">
           <Input
             id="productName"
             label="Nazwa produktu"
@@ -13,7 +13,7 @@
           />
         </div>
 
-        <div class="col">
+        <div class="col-12 col-md">
           <Input
             id="productQuantity"
             type="number"
@@ -25,7 +25,7 @@
           />
         </div>
 
-        <div class="col">
+        <div class="col-12 col-md">
           <button
             type="submit"
             class="btn btn-primary d-flex align-items-center gap-2"

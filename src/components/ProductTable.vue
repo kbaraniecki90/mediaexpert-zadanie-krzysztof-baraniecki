@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Lista produktów</h2>
-    <table class="table table-striped mt-3">
+    <table class="table table-responsive table-striped mt-3">
       <thead>
         <tr>
           <th @click="sortBy('name')">
