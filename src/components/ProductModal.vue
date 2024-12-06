@@ -10,7 +10,13 @@
         <div class="modal-content">
           <div class="modal-header justify-content-between">
             <h5 class="modal-title">Edytuj produkt</h5>
-            <button type="button" class="close" @click="closeModal">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+              @click="closeModal"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
