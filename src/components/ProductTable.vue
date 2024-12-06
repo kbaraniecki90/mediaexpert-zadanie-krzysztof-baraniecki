@@ -14,12 +14,21 @@
             <span v-if="sortKey === 'quantity' && sortOrder === 'asc'">↑</span>
             <span v-if="sortKey === 'quantity' && sortOrder === 'desc'">↓</span>
           </th>
+          <th>Akcje</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(product, index) in sortedProducts" :key="index">
           <td>{{ product.name }}</td>
           <td>{{ product.quantity }}</td>
+          <td>
+            <button
+              @click="openModal(product, index)"
+              class="btn btn-primary btn-sm"
+            >
+              Edytuj
+            </button>
+          </td>
         </tr>
       </tbody>
       <tfoot>
@@ -28,16 +37,28 @@
           <td>
             <strong>Razem: {{ totalQuantity }}</strong>
           </td>
+          <td></td>
         </tr>
       </tfoot>
     </table>
+
+    <ProductModal
+      v-if="currentProduct"
+      :show="isModalOpen"
+      :product="currentProduct"
+      @save="saveProduct"
+      @close="closeModal"
+      @delete="deleteProduct"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed, ref } from "vue";
+import ProductModal from "./ProductModal.vue";
 
 export default defineComponent({
+  components: { ProductModal },
   props: {
     products: {
       type: Array as PropType<{ name: string; quantity: number }[]>,
@@ -47,6 +68,9 @@ export default defineComponent({
   setup(props) {
     const sortKey = ref<string | null>(null);
     const sortOrder = ref<"asc" | "desc" | null>(null);
+    const currentProduct = ref<{ name: string; quantity: number } | null>(null);
+    const currentIndex = ref<number | null>(null);
+    const isModalOpen = ref(false);
 
     const sortedProducts = computed(() => {
       if (!sortKey.value) return props.products;
@@ -87,12 +111,49 @@ export default defineComponent({
       props.products.reduce((total, product) => total + product.quantity, 0)
     );
 
+    const openModal = (
+      product: { name: string; quantity: number },
+      index: number
+    ) => {
+      currentProduct.value = { ...product };
+      currentIndex.value = index;
+      isModalOpen.value = true;
+    };
+
+    const closeModal = () => {
+      isModalOpen.value = false;
+      currentProduct.value = null;
+    };
+
+    const saveProduct = (updatedProduct: {
+      name: string;
+      quantity: number;
+    }) => {
+      if (currentIndex.value !== null) {
+        props.products[currentIndex.value] = updatedProduct;
+        closeModal();
+      }
+    };
+
+    const deleteProduct = () => {
+      if (currentIndex.value !== null) {
+        props.products.splice(currentIndex.value, 1);
+        closeModal();
+      }
+    };
+
     return {
       sortedProducts,
       sortBy,
       sortKey,
       sortOrder,
       totalQuantity,
+      openModal,
+      closeModal,
+      saveProduct,
+      deleteProduct,
+      isModalOpen,
+      currentProduct,
     };
   },
 });
